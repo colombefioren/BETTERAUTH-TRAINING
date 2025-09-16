@@ -1,45 +1,84 @@
 "use client";
 
-import { toast } from "sonner";
-import { Button } from "./ui/button";
+import { registerSchema, type RegisterFormData } from "@/lib/validations/auth";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Button } from "./ui/button";
 
 const RegisterForm = () => {
-  const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
+  const form = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    mode:"onTouched",
+  });
 
-    const name = formData.get("name") as string;
-    if (!name) return toast.error("Name is required");
-    const email = formData.get("email") as string;
-    if (!email) return toast.error("Email is required");
-    const password = formData.get("password") as string;
-    if (!password) return toast.error("Password is required");
-    console.log(name, email, password);
+  const submitData = async (data: RegisterFormData) => {
+    console.log(data);
   };
 
   return (
-    <form onSubmit={handleSumbit} className="max-w-sm w-full space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input id="name" name="name" type="text" />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input id="email" name="email" type="email" />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input id="password" name="password" type="password" />
-      </div>
-      <Button
-        type="submit"
-        className="w-full bg-black text-white cursor-pointer"
-      >
-        Register
-      </Button>
-    </form>
+    <Form {...form}>
+      <form className="space-y-6" onSubmit={form.handleSubmit(submitData)}>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} type="text" required />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        ></FormField>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="johndoe@gmail.com"
+                  type="email"
+                  required
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        ></FormField>
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input {...field} type="password" required />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        ></FormField>
+        <Button className="w-full bg-black text-white cursor-pointer" type="submit">Register</Button>
+      </form>
+    </Form>
   );
 };
 export default RegisterForm;
