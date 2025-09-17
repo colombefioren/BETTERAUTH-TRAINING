@@ -26,15 +26,35 @@ export const POST = async (request: NextRequest) => {
       profileImageSchema.parse(file);
     } catch (err) {
       if (err instanceof ZodError) {
-        return NextResponse.json({ error: err.message }, { status: 400 });
+        return NextResponse.json(
+          { error: err.issues[0].message },
+          { status: 400 }
+        );
       }
       return NextResponse.json({ error: "Invalid file" }, { status: 400 });
     }
 
-    const filePath = `/profile-images/${session.user.id}-${Date.now()}-${
-      file.name
+    const user = await prisma?.user.findUnique({
+      where: { id: session.user.id },
+    });
+
+    if (user?.image) {
+      const url = new URL(user.image);
+      const path = url.pathname.replace(
+        `/storage/v1/object/public/avatars/`,
+        ""
+      );
+      await supabase.storage.from("avatars").remove([path]);
     }
-`;
+
+    const cleanFileName = file.name
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-zA-Z0-9-_.]/g, "");
+    const filePath = `profile-image/${
+      session.user.id
+    }-${Date.now()}-${cleanFileName}`;
+
     const { error: UploadError } = await supabase.storage
       .from("avatars")
       .upload(filePath, file, {

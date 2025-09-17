@@ -7,6 +7,6 @@ export const profileImageSchema = z
     "File size must be less than 5MB"
   )
   .refine(
-    (file) => file.type.startsWith("/image"),
-    "Only imgae files are allowed"
+    (file) => file.type.startsWith("image/"),
+    "Only image files are allowed"
   );
