@@ -18,4 +18,13 @@ export const registerSchema = z.object({
     ),
 });
 
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, "Invalid email address"),
+  password: z.string().min(1, "Password cannot be empty"),
+});
+
+export type LoginFormData = z.infer<typeof loginSchema>;
+
 export type RegisterFormData = z.infer<typeof registerSchema>;

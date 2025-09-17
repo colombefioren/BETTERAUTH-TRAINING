@@ -1,8 +1,8 @@
 "use client";
 
-import { registerSchema, type RegisterFormData } from "@/lib/validations/auth";
-import { useForm } from "react-hook-form";
+import { LoginFormData, loginSchema } from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -13,29 +13,27 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { signUp } from "@/lib/auth-client";
-import { toast } from "sonner";
-import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { signIn } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
+  const form = useForm({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
     mode: "onTouched",
   });
 
-  const submitData = async (data: RegisterFormData) => {
-    await signUp.email(
+  const submitData = async (data: LoginFormData) => {
+    await signIn.email(
       {
-        name: data.name,
         email: data.email,
         password: data.password,
       },
@@ -53,12 +51,12 @@ const RegisterForm = () => {
               type: "server",
               message: ctx.error.details.issues[0].message,
             });
-            return;
           }
           toast.error(ctx.error.message);
         },
         onSuccess: () => {
-          toast.success("Account created successfully");
+          toast.success("Signed in successfully");
+
           router.push("/profile");
         },
       }
@@ -70,35 +68,17 @@ const RegisterForm = () => {
       <form className="space-y-6" onSubmit={form.handleSubmit(submitData)}>
         <FormField
           control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="John Doe" {...field} type="text" required />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        ></FormField>
-        <FormField
-          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="johndoe@gmail.com"
-                  type="email"
-                  required
-                />
+                <Input placeholder="Email" {...field} type="email" required />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        ></FormField>
+        />
         <FormField
           control={form.control}
           name="password"
@@ -106,12 +86,17 @@ const RegisterForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input {...field} type="password" required />
+                <Input
+                  placeholder="Password"
+                  {...field}
+                  type="password"
+                  required
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        ></FormField>
+        />
         <Button
           disabled={isLoading}
           className="w-full bg-black text-white cursor-pointer"
@@ -120,11 +105,11 @@ const RegisterForm = () => {
           {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
-            "Register"
+            "Log In"
           )}
         </Button>
       </form>
     </Form>
   );
 };
-export default RegisterForm;
+export default LoginForm;
