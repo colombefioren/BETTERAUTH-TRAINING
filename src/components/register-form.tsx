@@ -43,7 +43,6 @@ const RegisterForm = () => {
         },
         onResponse: () => {
           setIsLoading(false);
-          toast.success("Account created successfully");
         },
         onError: (ctx) => {
           if (ctx.error.code === "SCHEMA_VALIDATION_FAILED") {
@@ -55,6 +54,9 @@ const RegisterForm = () => {
             return;
           }
           toast.error(ctx.error.message);
+        },
+        onSuccess: () => {
+          toast.success("Account created successfully");
         },
       }
     );
@@ -112,9 +114,11 @@ const RegisterForm = () => {
           className="w-full bg-black text-white cursor-pointer"
           type="submit"
         >
-          {isLoading?
+          {isLoading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            : "Register"}
+          ) : (
+            "Register"
+          )}
         </Button>
       </form>
     </Form>
