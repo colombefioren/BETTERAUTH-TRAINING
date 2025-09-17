@@ -29,6 +29,7 @@ const RegisterForm = () => {
       name: "",
       email: "",
       password: "",
+      username: "",
     },
     mode: "onTouched",
   });
@@ -39,6 +40,7 @@ const RegisterForm = () => {
         name: data.name,
         email: data.email,
         password: data.password,
+        username: data.username,
       },
       {
         onRequest: () => {
@@ -77,6 +79,24 @@ const RegisterForm = () => {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input placeholder="John Doe" {...field} type="text" required />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        ></FormField>
+         <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="john_123"
+                  type="text"
+                  required
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -124,8 +144,11 @@ const RegisterForm = () => {
             "Register"
           )}
         </Button>
-         <div className="text-sm font-semibold text-center">
-          Don&apos;t have an account?{" "} <Link className="underline" href="/auth/login">Sign In</Link>
+        <div className="text-sm font-semibold text-center">
+          Don&apos;t have an account?{" "}
+          <Link className="underline" href="/auth/login">
+            Sign In
+          </Link>
         </div>
       </form>
     </Form>
