@@ -2,7 +2,8 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
 import { validator } from "validation-better-auth";
-import { loginSchema, registerSchema } from "./validations/auth";
+import { emailLoginSchema, registerSchema } from "./validations/auth";
+import { username } from "better-auth/plugins";
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
@@ -17,7 +18,8 @@ export const auth = betterAuth({
         path: "/sign-up/email",
         schema: registerSchema,
       },
-      { path: "/sign-in/email", schema: loginSchema },
+      { path: "/sign-in/email", schema: emailLoginSchema },
     ]),
+    username(),
   ],
 });

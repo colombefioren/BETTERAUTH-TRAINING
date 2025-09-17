@@ -42,7 +42,11 @@ model User {
   accounts Account[]
   posts    Post[]
 
+  username        String?
+  displayUsername String?
+
   @@map("user")
+  @@unique([username])
 }
 
 model Session {

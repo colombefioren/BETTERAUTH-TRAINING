@@ -16,15 +16,31 @@ export const registerSchema = z.object({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
       "Password must contain at least one uppercase letter, one lowercase letter, and one number"
     ),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters long")
+    .max(20, "Username must be at most 20 characters long")
+    .regex(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain letters, numbers, and underscores"
+    )
+    .trim(),
 });
 
-export const loginSchema = z.object({
+export const emailLoginSchema = z.object({
   email: z
     .string()
     .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, "Invalid email address"),
   password: z.string().min(1, "Password cannot be empty"),
 });
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+export const usernameLoginSchema = z.object({
+  username: z.string().min(1, "Username cannot be empty"),
+  password: z.string().min(1, "Password cannot be empty"),
+});
+
+export type UsernameLoginFormData = z.infer<typeof usernameLoginSchema>;
+
+export type EmailLoginFormData = z.infer<typeof emailLoginSchema>;
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
