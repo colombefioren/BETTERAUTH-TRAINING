@@ -15,8 +15,11 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { signUp } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const RegisterForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -35,8 +38,13 @@ const RegisterForm = () => {
         password: data.password,
       },
       {
-        onRequest: () => {},
-        onResponse: () => {},
+        onRequest: () => {
+          setIsLoading(true);
+        },
+        onResponse: () => {
+          setIsLoading(false);
+          toast.success("Account created successfully");
+        },
         onError: (ctx) => {
           if (ctx.error.code === "SCHEMA_VALIDATION_FAILED") {
             const field = ctx.error.details.issues[0].path[0];
@@ -100,10 +108,13 @@ const RegisterForm = () => {
           )}
         ></FormField>
         <Button
+          disabled={isLoading}
           className="w-full bg-black text-white cursor-pointer"
           type="submit"
         >
-          Register
+          {isLoading?
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            : "Register"}
         </Button>
       </form>
     </Form>
