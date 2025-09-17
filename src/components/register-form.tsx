@@ -31,7 +31,7 @@ const RegisterForm = () => {
       password: "",
       username: "",
     },
-    mode: "onTouched",
+    mode: "onSubmit",
   });
 
   const submitData = async (data: RegisterFormData) => {

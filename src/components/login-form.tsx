@@ -30,7 +30,7 @@ const LoginForm = () => {
       email: "",
       password: "",
     },
-    mode: "onTouched",
+    mode: "onSubmit",
   });
 
   const usernameForm = useForm<UsernameLoginFormData>({
@@ -39,7 +39,7 @@ const LoginForm = () => {
       username: "",
       password: "",
     },
-    mode: "onTouched",
+    mode: "onSubmit",
   });
 
   const handleLoginEmail = async (data: EmailLoginFormData) => {
