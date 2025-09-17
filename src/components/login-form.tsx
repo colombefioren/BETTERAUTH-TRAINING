@@ -18,6 +18,7 @@ import { signIn } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import Link from "next/link";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -108,6 +109,9 @@ const LoginForm = () => {
             "Log In"
           )}
         </Button>
+        <div className="text-sm font-semibold text-center">
+          Don&apos;t have an account?{" "} <Link className="underline" href="/auth/register">Sign Up</Link>
+        </div>
       </form>
     </Form>
   );

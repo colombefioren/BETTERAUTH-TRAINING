@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -123,6 +124,9 @@ const RegisterForm = () => {
             "Register"
           )}
         </Button>
+         <div className="text-sm font-semibold text-center">
+          Don&apos;t have an account?{" "} <Link className="underline" href="/auth/login">Sign In</Link>
+        </div>
       </form>
     </Form>
   );
