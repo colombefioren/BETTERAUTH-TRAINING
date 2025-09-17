@@ -1,6 +1,6 @@
 import { PrismaClient } from "@/generated/prisma";
 
-const getDatabaseUrl = () => {
+export const getDatabaseUrl = () => {
   const forceIpv6 = process.env.FORCE_IPV6 === "true";
   if (forceIpv6 || process.env.NODE_ENV === "production") {
     return process.env.DATABASE_URL_DIRECT!;
@@ -23,4 +23,3 @@ export const prisma =
   });
 
 if (process.env.NODE_ENV !== "production") global.prisma = prisma;
-
