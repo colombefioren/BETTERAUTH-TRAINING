@@ -13,6 +13,8 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { signUp } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 const RegisterForm = () => {
   const form = useForm<RegisterFormData>({
@@ -22,11 +24,32 @@ const RegisterForm = () => {
       email: "",
       password: "",
     },
-    mode:"onTouched",
+    mode: "onTouched",
   });
 
   const submitData = async (data: RegisterFormData) => {
-    console.log(data);
+    await signUp.email(
+      {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onRequest: () => {},
+        onResponse: () => {},
+        onError: (ctx) => {
+          if (ctx.error.code === "SCHEMA_VALIDATION_FAILED") {
+            const field = ctx.error.details.issues[0].path[0];
+            form.setError(field, {
+              type: "server",
+              message: ctx.error.details.issues[0].message,
+            });
+            return;
+          }
+          toast.error(ctx.error.message);
+        },
+      }
+    );
   };
 
   return (
@@ -76,7 +99,12 @@ const RegisterForm = () => {
             </FormItem>
           )}
         ></FormField>
-        <Button className="w-full bg-black text-white cursor-pointer" type="submit">Register</Button>
+        <Button
+          className="w-full bg-black text-white cursor-pointer"
+          type="submit"
+        >
+          Register
+        </Button>
       </form>
     </Form>
   );
