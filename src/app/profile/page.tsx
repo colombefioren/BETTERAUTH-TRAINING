@@ -66,7 +66,17 @@ const Profile = () => {
     }
   };
 
-  if (!session) {
+   if (sessionLoading ||isLoadingUser) {
+    return (
+      <div className="flex bg-black/30 items-center justify-center min-h-screen">
+        <div className="mx-auto w-sm rounded-lg bg-white border border-black p-8 flex justify-center items-center">
+          <Loader2 className="animate-spin h-6 w-6" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!session || !user) {
     return (
       <div className="flex bg-black/30 items-center justify-center min-h-screen">
         <div className="mx-auto w-sm rounded-lg bg-white border border-black p-8 text-center">
@@ -76,15 +86,7 @@ const Profile = () => {
     );
   }
 
-  if (sessionLoading || !user || isLoadingUser) {
-    return (
-      <div className="flex bg-black/30 items-center justify-center min-h-screen">
-        <div className="mx-auto w-sm rounded-lg bg-white border border-black p-8 flex justify-center items-center">
-          <Loader2 className="animate-spin h-6 w-6" />
-        </div>
-      </div>
-    );
-  }
+ 
 
   return (
     <div className="flex bg-black/30 items-center justify-center min-h-screen">
