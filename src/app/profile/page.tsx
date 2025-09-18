@@ -4,7 +4,7 @@ import SignOutButton from "@/components/sign-out-button";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 import { profileImageSchema } from "@/lib/validations/upload";
-import { useProfilePicStore } from "@/store/useUserStore";
+import { useUserStore } from "@/store/useUserStore";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useRef } from "react";
@@ -13,8 +13,8 @@ import { ZodError } from "zod";
 
 const Profile = () => {
   const { data: session } = useSession();
-  const profilePic = useProfilePicStore((state) => state.profilePic);
-  const setProfilePic = useProfilePicStore((state) => state.setProfilePic);
+  const profilePic = useUserStore((state) => state.user?.image);
+  const setProfilePic = useUserStore((state) => state.setProfilePic);
 
   const inputUploadRef = useRef<HTMLInputElement | null>(null);
 
