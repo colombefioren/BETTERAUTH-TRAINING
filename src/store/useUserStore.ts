@@ -7,8 +7,8 @@ user:{
   email: string;
   image?: string | null;
   emailVerified: boolean;
-  username?: string;
-  displayUsername?: string;
+  username?: string | null;
+  displayUsername?: string | null;
 } | null,
 isLoadingUser: boolean;
 setLoadingUser: (isLoadingUser: boolean) => void;

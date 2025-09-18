@@ -16,6 +16,7 @@ const Profile = () => {
   const user = useUserStore((state) => state.user);
   const profilePic = user?.image;
   const setProfilePic = useUserStore((state) => state.setProfilePic);
+  const isLoadingUser = useUserStore((state) => state.isLoadingUser);
   const isLoadingProfilePic = useUserStore(
     (state) => state.isLoadingProfilePic
   );
@@ -65,7 +66,7 @@ const Profile = () => {
     }
   };
 
-  if (sessionLoading || !user) {
+  if (sessionLoading || !user || isLoadingUser) {
     return (
       <div className="flex bg-black/30 items-center justify-center min-h-screen">
         <div className="mx-auto w-sm rounded-lg bg-white border border-black p-8 flex justify-center items-center">
@@ -130,7 +131,7 @@ const Profile = () => {
         </div>
 
         <pre className="text-sm overflow-clip">
-          {JSON.stringify(session.user, null, 2)}
+          {user.name} - {user.email}
         </pre>
       </div>
     </div>
