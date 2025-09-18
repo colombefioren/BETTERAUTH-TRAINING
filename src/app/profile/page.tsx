@@ -4,21 +4,17 @@ import SignOutButton from "@/components/sign-out-button";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 import { profileImageSchema } from "@/lib/validations/upload";
+import { useProfilePicStore } from "@/store/useUserStore";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { toast } from "sonner";
 import { ZodError } from "zod";
 
 const Profile = () => {
   const { data: session } = useSession();
-  const [profilePic, setProfilePic] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (session?.user?.image) {
-      setProfilePic(session.user.image);
-    }
-  }, [session?.user?.image]);
+  const profilePic = useProfilePicStore((state) => state.profilePic);
+  const setProfilePic = useProfilePicStore((state) => state.setProfilePic);
 
   const inputUploadRef = useRef<HTMLInputElement | null>(null);
 
