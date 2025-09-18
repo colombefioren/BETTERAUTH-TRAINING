@@ -66,21 +66,21 @@ const Profile = () => {
     }
   };
 
-  if (sessionLoading || !user || isLoadingUser) {
-    return (
-      <div className="flex bg-black/30 items-center justify-center min-h-screen">
-        <div className="mx-auto w-sm rounded-lg bg-white border border-black p-8 flex justify-center items-center">
-          <Loader2 className="animate-spin h-6 w-6" />
-        </div>
-      </div>
-    );
-  }
-
   if (!session) {
     return (
       <div className="flex bg-black/30 items-center justify-center min-h-screen">
         <div className="mx-auto w-sm rounded-lg bg-white border border-black p-8 text-center">
           UNAUTHORIZED
+        </div>
+      </div>
+    );
+  }
+
+  if (sessionLoading || !user || isLoadingUser) {
+    return (
+      <div className="flex bg-black/30 items-center justify-center min-h-screen">
+        <div className="mx-auto w-sm rounded-lg bg-white border border-black p-8 flex justify-center items-center">
+          <Loader2 className="animate-spin h-6 w-6" />
         </div>
       </div>
     );
