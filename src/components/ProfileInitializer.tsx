@@ -5,31 +5,25 @@ import { useUserStore } from "@/store/useUserStore";
 import { useEffect } from "react";
 
 const ProfileInitializer = () => {
-  const session = useSession();
+  const { data: session, isPending } = useSession();
   const setUser = useUserStore((state) => state.setUser);
   const setIsLoadingUser = useUserStore((state) => state.setLoadingUser);
 
   useEffect(() => {
-    const initUser = async () => {
-      if (!session.data?.user) return;
+    setIsLoadingUser(isPending);
 
-      setIsLoadingUser(true);
+    if (!session?.user) return;
 
-      setUser({
-        id: session.data.user.id,
-        name: session.data.user.name,
-        email: session.data.user.email,
-        image: session.data.user.image,
-        emailVerified: session.data.user.emailVerified,
-        username: session.data.user.username,
-        displayUsername: session.data.user.displayUsername,
-      });
-
-      setIsLoadingUser(false);
-    };
-
-    initUser();
-  }, [session.data?.user, setUser, setIsLoadingUser]);
+    setUser({
+      id: session.user.id,
+      name: session.user.name,
+      email: session.user.email,
+      image: session.user.image,
+      emailVerified: session.user.emailVerified,
+      username: session.user.username,
+      displayUsername: session.user.displayUsername,
+    });
+  }, [session?.user, isPending, setUser, setIsLoadingUser]);
 
   return null;
 };
