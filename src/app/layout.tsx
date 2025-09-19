@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
-import ProfileInitializer from "@/components/ProfileInitializer";
+import ProfileInitializer from "@/components/profile-initializer";
 
 export const metadata: Metadata = {
   title: "BetterAuth Todo",
