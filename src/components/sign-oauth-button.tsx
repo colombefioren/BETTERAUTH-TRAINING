@@ -19,7 +19,7 @@ const SignOauthButton = ({ provider, signUp }: SignOauthButtonProps) => {
     setIsPending(false);
   };
   return (
-    <Button onClick={handleClick} disabled={isPending}>
+    <Button className="cursor-pointer border-black border" onClick={handleClick} disabled={isPending}>
       Sign {action} with {providerName}
     </Button>
   );

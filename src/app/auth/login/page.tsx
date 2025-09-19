@@ -1,4 +1,5 @@
 import LoginForm from "@/components/login-form";
+import SignOauthButton from "@/components/sign-oauth-button";
 
 const Login = () => {
   return (
@@ -8,6 +9,10 @@ const Login = () => {
           <h1 className="text-3xl font-bold">Log In</h1>
         </div>
         <LoginForm />
+        <div className="flex w-full flex-col space-y-4">
+          <SignOauthButton provider="google" />
+          <SignOauthButton provider="github" />
+        </div>
       </div>
     </div>
   );

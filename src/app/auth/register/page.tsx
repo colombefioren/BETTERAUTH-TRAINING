@@ -1,4 +1,5 @@
 import RegisterForm from "@/components/register-form";
+import SignOauthButton from "@/components/sign-oauth-button";
 
 const Register = () => {
   return (
@@ -8,7 +9,12 @@ const Register = () => {
           <h1 className="text-3xl font-bold">Register</h1>
         </div>
         <RegisterForm />
+        <div className="flex w-full flex-col space-y-4">
+          <SignOauthButton signUp provider="google" />
+          <SignOauthButton signUp provider="github" />
+        </div>
       </div>
+
     </div>
   );
 };
