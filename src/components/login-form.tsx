@@ -1,6 +1,11 @@
 "use client";
 
-import { type EmailLoginFormData, emailLoginSchema, UsernameLoginFormData, usernameLoginSchema } from "@/lib/validations/auth";
+import {
+  type EmailLoginFormData,
+  emailLoginSchema,
+  UsernameLoginFormData,
+  usernameLoginSchema,
+} from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -62,6 +67,9 @@ const LoginForm = () => {
               type: "server",
               message: ctx.error.details.issues[0].message,
             });
+          } else if (ctx.error.code === "EMAIL_NOT_VERIFIED") {
+            toast.error(ctx.error.message);
+            router.push("/auth/verify?error=email_not_verified");
           }
           toast.error(ctx.error.message);
         },
@@ -74,7 +82,7 @@ const LoginForm = () => {
     );
   };
 
-    const handleLoginUsername = async (data: UsernameLoginFormData) => {
+  const handleLoginUsername = async (data: UsernameLoginFormData) => {
     await signIn.username(
       {
         username: data.username,
@@ -109,12 +117,25 @@ const LoginForm = () => {
   return (
     <Tabs defaultValue="email">
       <TabsList className="w-full mb-5">
-        <TabsTrigger className="bg-gray-100 cursor-pointer text-black px-4 py-2  hover:bg-gray-200 data-[state=active]:bg-black data-[state=active]:text-white" value="email">Email</TabsTrigger>
-        <TabsTrigger className="bg-gray-100 cursor-pointer text-black px-4 py-2 hover:bg-gray-200 data-[state=active]:bg-black data-[state=active]:text-white" value="username">Username</TabsTrigger>
+        <TabsTrigger
+          className="bg-gray-100 cursor-pointer text-black px-4 py-2  hover:bg-gray-200 data-[state=active]:bg-black data-[state=active]:text-white"
+          value="email"
+        >
+          Email
+        </TabsTrigger>
+        <TabsTrigger
+          className="bg-gray-100 cursor-pointer text-black px-4 py-2 hover:bg-gray-200 data-[state=active]:bg-black data-[state=active]:text-white"
+          value="username"
+        >
+          Username
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="email">
         <Form {...emailForm}>
-          <form className="space-y-6" onSubmit={emailForm.handleSubmit(handleLoginEmail)}>
+          <form
+            className="space-y-6"
+            onSubmit={emailForm.handleSubmit(handleLoginEmail)}
+          >
             <FormField
               control={emailForm.control}
               name="email"
@@ -173,7 +194,10 @@ const LoginForm = () => {
       </TabsContent>
       <TabsContent value="username">
         <Form {...usernameForm}>
-          <form className="space-y-6" onSubmit={usernameForm.handleSubmit(handleLoginUsername)}>
+          <form
+            className="space-y-6"
+            onSubmit={usernameForm.handleSubmit(handleLoginUsername)}
+          >
             <FormField
               control={usernameForm.control}
               name="username"

@@ -27,6 +27,12 @@ export const registerSchema = z.object({
     .trim(),
 });
 
+export const emailSchema = z.object({
+  email: z
+    .string()
+    .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, "Invalid email address"),
+});
+
 export const emailLoginSchema = z.object({
   email: z
     .string()
