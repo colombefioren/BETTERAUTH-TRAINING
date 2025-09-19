@@ -4,6 +4,7 @@ import { prisma } from "./prisma";
 import { validator } from "validation-better-auth";
 import { emailLoginSchema, registerSchema } from "./validations/auth";
 import { username } from "better-auth/plugins";
+import { sendEmailAction } from "@/actions/send-email.action";
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
@@ -11,6 +12,22 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    expiresIn: 60 * 60,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url }) => {
+      await sendEmailAction({
+        to: user.email,
+        subject: "Verify your email address",
+        meta: {
+          description:
+            "Please click the link below to verify your email address.",
+          link: url.toString(),
+        },
+      });
+    },
   },
   appName: "BetterAuth Todo",
   plugins: [
