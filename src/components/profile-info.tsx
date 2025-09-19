@@ -64,11 +64,7 @@ const ProfileInfo = () => {
     }
   };
 
-  if (!user) {
-    return <h1 className="text-xl font-bold text-center">UNAUTHORIZED</h1>;
-  }
-
-  if (isLoadingUser) {
+  if (isLoadingUser || !user) {
     return (
       <div className="flex bg-black/30 items-center justify-center min-h-screen">
         <div className="mx-auto w-sm rounded-lg bg-white border border-black p-8 flex justify-center items-center">
