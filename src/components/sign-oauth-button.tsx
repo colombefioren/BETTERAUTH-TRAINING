@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { signIn } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 interface SignOauthButtonProps {
   provider: "google" | "github";
@@ -14,9 +16,22 @@ const SignOauthButton = ({ provider, signUp }: SignOauthButtonProps) => {
   const providerName = provider === "google" ? "Google" : "Github";
 
   const handleClick = async () => {
-    setIsPending(true);
-
-    setIsPending(false);
+   await signIn.social({
+    provider,
+    callbackURL: "/profile",
+    errorCallbackURL:"/auth/login/error",
+    fetchOptions: {
+      onRequest: () => {
+        setIsPending(true);
+      },
+      onResponse: () => {
+        setIsPending(false);
+      },
+      onError: (ctx) => {
+        toast.error(ctx.error.message);
+      },
+    }
+   })
   };
   return (
     <Button className="cursor-pointer border-black border" onClick={handleClick} disabled={isPending}>
