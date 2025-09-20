@@ -27,6 +27,22 @@ export const registerSchema = z.object({
     .trim(),
 });
 
+export const updateUserSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be less than 50 characters")
+    .regex(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces"),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters long")
+    .max(20, "Username must be at most 20 characters long")
+    .regex(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain letters, numbers, and underscores"
+    ),
+});
+
 export const changePasswordSchema = z
   .object({
     currentPassword: z
@@ -89,3 +105,5 @@ export type PasswordFormData = z.infer<typeof passwordSchema>;
 export type changePasswordFormData = z.infer<typeof changePasswordSchema>;
 
 export type EmailFormData = z.infer<typeof emailSchema>;
+
+export type UpdateUserFormData = z.infer<typeof updateUserSchema>;

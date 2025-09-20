@@ -1,27 +1,29 @@
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
-import { EmailFormData, emailSchema } from "@/lib/validations/auth";
+import { UpdateUserFormData, updateUserSchema } from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { changeEmail } from "@/lib/auth-client";
+import { updateUser } from "@/lib/auth-client";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const ChangeEmailForm = () => {
+const UpdateUserForm = () => {
   const [isPending, setIsPending] = useState(false);
-  const form = useForm<EmailFormData>({
-    resolver: zodResolver(emailSchema),
+  const form = useForm<UpdateUserFormData>({
+    resolver: zodResolver(updateUserSchema),
     mode: "onSubmit",
     defaultValues: {
-      email: "",
+      name: "",
+      username: "",
     },
   });
 
-  const submitNewPassword = async (data: EmailFormData) => {
-    await changeEmail({
-      newEmail: data.email,
+  const submitNewPassword = async (data: UpdateUserFormData) => {
+    await updateUser({
+      name: data.name,
+      username: data.username,
       fetchOptions: {
         onRequest: () => {
           setIsPending(true);
@@ -33,7 +35,7 @@ const ChangeEmailForm = () => {
           toast.error(ctx.error.message);
         },
         onSuccess: () => {
-          toast.success("Email changed successfully");
+          toast.success("Informations updated successfully");
         },
       },
     });
@@ -44,12 +46,25 @@ const ChangeEmailForm = () => {
       <form className="mt-10 space-y-4 mx-auto max-w-xl flex flex-col" onSubmit={form.handleSubmit(submitNewPassword)}>
         <FormField
           control={form.control}
-          name="email"
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <Label>Enter new name</Label>
+              <FormControl>
+                <Input type="text" id="name" required {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="username"
           render={({ field }) => (
             <FormItem>
               <Label>Enter new email</Label>
               <FormControl>
-                <Input type="email" id="email" required {...field} />
+                <Input type="text" id="username" required {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,4 +81,4 @@ const ChangeEmailForm = () => {
     </Form>
   );
 };
-export default ChangeEmailForm;
+export default UpdateUserForm;

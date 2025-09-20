@@ -47,7 +47,7 @@ const ChangePasswordForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(submitNewPassword)}>
+      <form className="mt-10 space-y-4 mx-auto max-w-xl flex flex-col" onSubmit={form.handleSubmit(submitNewPassword)}>
         <FormField
           control={form.control}
           name="currentPassword"
