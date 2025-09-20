@@ -27,6 +27,23 @@ export const registerSchema = z.object({
     .trim(),
 });
 
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .min(6, "Password must be at least 6 characters long")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+      ),
+    newPassword: z.string().min(1, "Password cannot be empty"),
+    confirmNewPassword: z.string().min(1, "Password cannot be empty"),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    path: ["confirmNewPassword"],
+    message: "Passwords do not match",
+  });
+
 export const passwordSchema = z
   .object({
     password: z
@@ -68,3 +85,7 @@ export type EmailLoginFormData = z.infer<typeof emailLoginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
 
 export type PasswordFormData = z.infer<typeof passwordSchema>;
+
+export type changePasswordFormData = z.infer<typeof changePasswordSchema>;
+
+export type EmailFormData = z.infer<typeof emailSchema>;

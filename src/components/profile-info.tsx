@@ -66,7 +66,7 @@ const ProfileInfo = () => {
 
   if (isLoadingUser || !user) {
     return (
-      <div className="flex bg-black/30 items-center justify-center min-h-screen">
+      <div className="flex  items-center justify-center min-h-screen">
         <div className="mx-auto w-sm rounded-lg bg-white border border-black p-8 flex justify-center items-center">
           <Loader2 className="animate-spin h-6 w-6" />
         </div>
@@ -75,7 +75,7 @@ const ProfileInfo = () => {
   }
 
   return (
-    <div className="flex bg-black/30 items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="mx-auto w-sm h-[80vh] rounded-lg bg-white border border-black p-8 space-y-6">
         <div className="flex flex-col items-center gap-4">
           <div className="relative">
