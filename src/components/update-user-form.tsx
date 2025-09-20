@@ -62,7 +62,7 @@ const UpdateUserForm = () => {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <Label>Enter new email</Label>
+              <Label>Enter new username</Label>
               <FormControl>
                 <Input type="text" id="username" required {...field} />
               </FormControl>
