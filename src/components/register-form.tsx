@@ -64,7 +64,7 @@ const RegisterForm = () => {
           toast.success(
             "Account created successfully! Please verify your email!"
           );
-          router.push("/profile");
+          router.push("/auth/register/success");
         },
       }
     );
