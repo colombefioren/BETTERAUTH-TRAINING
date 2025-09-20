@@ -27,6 +27,22 @@ export const registerSchema = z.object({
     .trim(),
 });
 
+export const passwordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters long")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+      ),
+    confirmPassword: z.string().min(1, "Password cannot be empty"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
+
 export const emailSchema = z.object({
   email: z
     .string()
@@ -50,3 +66,5 @@ export type UsernameLoginFormData = z.infer<typeof usernameLoginSchema>;
 export type EmailLoginFormData = z.infer<typeof emailLoginSchema>;
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
+
+export type PasswordFormData = z.infer<typeof passwordSchema>;
