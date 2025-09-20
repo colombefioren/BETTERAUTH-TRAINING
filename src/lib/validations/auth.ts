@@ -27,6 +27,61 @@ export const registerSchema = z.object({
     .trim(),
 });
 
+export const updateUserSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be less than 50 characters")
+    .regex(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces"),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters long")
+    .max(20, "Username must be at most 20 characters long")
+    .regex(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain letters, numbers, and underscores"
+    ),
+});
+
+export const changePasswordSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .min(6, "Password must be at least 6 characters long")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+      ),
+    currentPassword: z.string().min(1, "Password cannot be empty"),
+    confirmNewPassword: z.string().min(1, "Password cannot be empty"),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    path: ["confirmNewPassword"],
+    message: "Passwords do not match",
+  });
+
+export const passwordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters long")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+      ),
+    confirmPassword: z.string().min(1, "Password cannot be empty"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
+
+export const emailSchema = z.object({
+  email: z
+    .string()
+    .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/, "Invalid email address"),
+});
+
 export const emailLoginSchema = z.object({
   email: z
     .string()
@@ -44,3 +99,11 @@ export type UsernameLoginFormData = z.infer<typeof usernameLoginSchema>;
 export type EmailLoginFormData = z.infer<typeof emailLoginSchema>;
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
+
+export type PasswordFormData = z.infer<typeof passwordSchema>;
+
+export type changePasswordFormData = z.infer<typeof changePasswordSchema>;
+
+export type EmailFormData = z.infer<typeof emailSchema>;
+
+export type UpdateUserFormData = z.infer<typeof updateUserSchema>;

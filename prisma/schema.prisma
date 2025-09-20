@@ -34,19 +34,18 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
 
   name          String
-  email         String
+  email         String  @unique
   emailVerified Boolean @default(false)
-  image         String? @unique
+  image         String?
 
   sessions Session[]
   accounts Account[]
   posts    Post[]
 
-  username        String?
+  username        String? @unique
   displayUsername String?
 
   @@map("user")
-  @@unique([username])
 }
 
 model Session {

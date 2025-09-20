@@ -61,8 +61,10 @@ const RegisterForm = () => {
           toast.error(ctx.error.message);
         },
         onSuccess: () => {
-          toast.success("Account created successfully");
-          router.push("/profile");
+          toast.success(
+            "Account created successfully! Please verify your email!"
+          );
+          router.push("/auth/register/success");
         },
       }
     );
@@ -84,19 +86,14 @@ const RegisterForm = () => {
             </FormItem>
           )}
         ></FormField>
-         <FormField
+        <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder="john_123"
-                  type="text"
-                  required
-                />
+                <Input {...field} placeholder="john_123" type="text" required />
               </FormControl>
               <FormMessage />
             </FormItem>

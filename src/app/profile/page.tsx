@@ -1,6 +1,8 @@
-import SignOutButton from "@/components/sign-out-button";
+import ProfileInfo from "@/components/profile-info";
+import ProfileUpdate from "@/components/profile-update";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 const Profile = async () => {
   const session = await auth.api.getSession({
@@ -8,28 +10,14 @@ const Profile = async () => {
   });
 
   if (!session) {
-    return (
-      <div className="flex bg-black/30 items-center justify-center min-h-screen">
-        <div className="mx-auto w-sm rounded-lg bg-white border border-black space-y-8 p-8 ">
-          <div className="space-y-8">
-            <h1 className="text-3xl font-bold">Unauthorized</h1>
-          </div>
-        </div>
-      </div>
-    );
+    redirect("/auth/login");
   }
 
   return (
-    <div className="flex bg-black/30 items-center justify-center min-h-screen">
-      <div className="mx-auto w-sm rounded-lg bg-white border border-black space-y-8 p-8 ">
-        <div className="space-y-8">
-          <h1 className="text-3xl font-bold">Profile</h1>
-          <SignOutButton/>
-        </div>
-        <pre className="text-sm overflow-clip">{JSON.stringify(session, null, 2)}</pre>
-      </div>
+    <div className="flex bg-black/30  items-center justify-center gap-20">
+      <ProfileInfo />
+      <ProfileUpdate/>
     </div>
   );
 };
-
 export default Profile;

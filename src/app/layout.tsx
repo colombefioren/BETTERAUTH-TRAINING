@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
+import ProfileInitializer from "@/components/profile-initializer";
 
 export const metadata: Metadata = {
   title: "BetterAuth Todo",
@@ -14,7 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}<Toaster position="top-center" richColors/></body>
+      <body>
+        <ProfileInitializer/>
+        {children}
+        <Toaster position="top-center" richColors />
+      </body>
     </html>
   );
 }
