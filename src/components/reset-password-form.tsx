@@ -10,14 +10,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { resetPassword } from "@/lib/auth-client";
 import { type PasswordFormData, passwordSchema } from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm = ({ token }: { token: string }) => {
   const [isPending, setIsPending] = useState(false);
-
+  const router = useRouter();
   const form = useForm<PasswordFormData>({
     resolver: zodResolver(passwordSchema),
     mode: "onSubmit",
@@ -27,15 +30,33 @@ const ResetPasswordForm = () => {
     },
   });
 
-  const submitEmail = async (data: PasswordFormData) => {
-    console.log(data);
+  const submitNewPassword = async (data: PasswordFormData) => {
+    await resetPassword({
+      token,
+      newPassword: data.password,
+      fetchOptions: {
+        onRequest: () => {
+          setIsPending(true);
+        },
+        onResponse: () => {
+          setIsPending(false);
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+        onSuccess: () => {
+          toast.success("Password reset successfully");
+          router.push("/auth/login");
+        },
+      },
+    });
   };
 
   return (
     <Form {...form}>
       <form
         className="mt-10 space-y-4 mx-auto max-w-xl flex flex-col"
-        onSubmit={form.handleSubmit(submitEmail)}
+        onSubmit={form.handleSubmit(submitNewPassword)}
       >
         <FormField
           control={form.control}
